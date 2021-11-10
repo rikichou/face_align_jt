@@ -7,6 +7,8 @@
 '''
 import argparse
 
+# Warning, if use this as a package, add sys.path.append('../common_utils/Facealign')
+
 import cv2
 import numpy as np
 import torch
@@ -125,10 +127,15 @@ class faceAlignment():
         expendw =  facew - shortsize
         expendh =  faceh - shortsize
 
-        sx = sx - (expendw / 2)
-        ex = ex + (expendw / 2)
-        sy = sy - (expendh / 2)
-        ey = ey + (expendh / 2)
+        if expendw == 0:
+            sy += expendh
+        else:
+            sx = sx + (expendw / 2)
+            ex = ex - (expendw / 2)
+        # sx = sx - (expendw / 2)
+        # ex = ex + (expendw / 2)
+        # sy = sy - (expendh / 2)
+        # ey = ey + (expendh / 2)
 
         sx = int(max(0, sx))
         sy = int(max(0, sy))
@@ -145,7 +152,10 @@ class faceAlignment():
         # get face image
         face_image,sx,sy,ex,ey = self.get_input_face(image, rect)
 
+        self.det_area = (sx,sy,ex,ey)
+
         # get points
+        face_image = cv2.cvtColor(face_image, cv2.COLOR_BGR2GRAY)
         eyePoints,mouthPoints = self.__call__(face_image)
 
         # relocation
