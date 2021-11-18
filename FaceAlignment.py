@@ -61,7 +61,7 @@ def get_args():
 
     return args
 
-getted_args = get_args()
+#getted_args = get_args()
 
 class faceAlignment():
     """ This is a custom engine for this training cycle """
