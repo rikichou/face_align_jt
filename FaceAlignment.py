@@ -70,7 +70,7 @@ class faceAlignment():
         self.image_size = image_size
         self.device = device
         model = torch.load(modelPath)
-        model.cuda()
+        model.to(self.device)
         self.network = model
         self.network.eval()
 
